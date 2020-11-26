@@ -122,7 +122,7 @@ if __name__ == "__main__":
     # ========= process that get a Top N lookup table from comprehensive data set[ratings.txt] =========
     # ==================================================================================================
 
-    topN = 100
+    topN = 500
 
     if not os.path.isfile("./dataSet/top_%d_words.josn" % (topN)) and not os.path.isfile("./dataSet/top_%d_index.json" % (topN)):
         dataDocs = loadDocs("./dataSet/dataDocs.pkl")

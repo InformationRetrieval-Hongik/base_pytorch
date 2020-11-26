@@ -24,7 +24,7 @@ if torch.backends.cudnn.enabled:
 topN = 100
 embedding_dim = 10
 
-epoch_size = 100
+epoch_size = 50
 batch_size = 500
 
 model = DNN(vocab_size=topN + 2, embedding_dim=embedding_dim, vector_len=80).to(device)

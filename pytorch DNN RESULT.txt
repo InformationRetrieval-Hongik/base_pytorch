@@ -1,0 +1,242 @@
+================================================
+================== train info ==================
+================================================
+Top frequency words range : 500
+Embedding Vectors dimension : 5
+Epoch Size : 50
+Batch Size : 500
+Learning Rate : 0.001
+train x shape : (145791, 80)
+train y shape : (145791,)
+test x shape : (48995, 80)
+test y shape : (48995,)
+model info : DNN(
+  (embedding): Embedding(502, 5)
+  (flatten): Flatten(start_dim=1, end_dim=-1)
+  (linear_a): Linear(in_features=400, out_features=64, bias=True)
+  (linear_b): Linear(in_features=64, out_features=64, bias=True)
+  (linear_c): Linear(in_features=64, out_features=1, bias=True)
+  (relu): ReLU()
+  (sigmoid): Sigmoid()
+)
+================================================
+================= train start ==================
+================================================
+[Epoch 001/050] - time taken: 1.841 | Loss: 0.656 | Acc: 59.873
+[Epoch 002/050] - time taken: 1.696 | Loss: 0.577 | Acc: 68.923
+[Epoch 003/050] - time taken: 1.660 | Loss: 0.514 | Acc: 73.852
+[Epoch 004/050] - time taken: 1.662 | Loss: 0.474 | Acc: 76.518
+[Epoch 005/050] - time taken: 1.820 | Loss: 0.450 | Acc: 78.037
+[Epoch 006/050] - time taken: 1.724 | Loss: 0.437 | Acc: 78.769
+[Epoch 007/050] - time taken: 1.822 | Loss: 0.426 | Acc: 79.337
+[Epoch 008/050] - time taken: 1.700 | Loss: 0.419 | Acc: 79.712
+[Epoch 009/050] - time taken: 1.762 | Loss: 0.414 | Acc: 79.982
+[Epoch 010/050] - time taken: 1.677 | Loss: 0.409 | Acc: 80.232
+[Epoch 011/050] - time taken: 1.676 | Loss: 0.404 | Acc: 80.478
+[Epoch 012/050] - time taken: 1.722 | Loss: 0.400 | Acc: 80.730
+[Epoch 013/050] - time taken: 1.721 | Loss: 0.396 | Acc: 80.851
+[Epoch 014/050] - time taken: 1.670 | Loss: 0.393 | Acc: 80.945
+[Epoch 015/050] - time taken: 1.816 | Loss: 0.389 | Acc: 81.173
+[Epoch 016/050] - time taken: 1.660 | Loss: 0.387 | Acc: 81.292
+[Epoch 017/050] - time taken: 1.705 | Loss: 0.384 | Acc: 81.363
+[Epoch 018/050] - time taken: 1.804 | Loss: 0.381 | Acc: 81.528
+[Epoch 019/050] - time taken: 1.809 | Loss: 0.379 | Acc: 81.605
+[Epoch 020/050] - time taken: 1.717 | Loss: 0.377 | Acc: 81.652
+[Epoch 021/050] - time taken: 1.678 | Loss: 0.376 | Acc: 81.795
+[Epoch 022/050] - time taken: 1.839 | Loss: 0.373 | Acc: 81.862
+[Epoch 023/050] - time taken: 1.665 | Loss: 0.371 | Acc: 82.038
+[Epoch 024/050] - time taken: 1.669 | Loss: 0.370 | Acc: 82.023
+[Epoch 025/050] - time taken: 1.798 | Loss: 0.368 | Acc: 82.101
+[Epoch 026/050] - time taken: 1.709 | Loss: 0.366 | Acc: 82.226
+[Epoch 027/050] - time taken: 1.726 | Loss: 0.365 | Acc: 82.323
+[Epoch 028/050] - time taken: 1.727 | Loss: 0.363 | Acc: 82.402
+[Epoch 029/050] - time taken: 1.694 | Loss: 0.362 | Acc: 82.460
+[Epoch 030/050] - time taken: 1.711 | Loss: 0.360 | Acc: 82.549
+[Epoch 031/050] - time taken: 1.809 | Loss: 0.359 | Acc: 82.600
+[Epoch 032/050] - time taken: 1.724 | Loss: 0.358 | Acc: 82.651
+[Epoch 033/050] - time taken: 1.674 | Loss: 0.356 | Acc: 82.753
+[Epoch 034/050] - time taken: 1.790 | Loss: 0.355 | Acc: 82.760
+[Epoch 035/050] - time taken: 1.667 | Loss: 0.356 | Acc: 82.805
+[Epoch 036/050] - time taken: 1.658 | Loss: 0.353 | Acc: 82.929
+[Epoch 037/050] - time taken: 1.679 | Loss: 0.352 | Acc: 82.929
+[Epoch 038/050] - time taken: 1.889 | Loss: 0.351 | Acc: 82.989
+[Epoch 039/050] - time taken: 1.657 | Loss: 0.351 | Acc: 83.087
+[Epoch 040/050] - time taken: 1.664 | Loss: 0.350 | Acc: 83.125
+[Epoch 041/050] - time taken: 1.663 | Loss: 0.347 | Acc: 83.225
+[Epoch 042/050] - time taken: 1.664 | Loss: 0.346 | Acc: 83.267
+[Epoch 043/050] - time taken: 1.663 | Loss: 0.345 | Acc: 83.310
+[Epoch 044/050] - time taken: 1.694 | Loss: 0.344 | Acc: 83.483
+[Epoch 045/050] - time taken: 1.782 | Loss: 0.344 | Acc: 83.376
+[Epoch 046/050] - time taken: 1.786 | Loss: 0.345 | Acc: 83.310
+[Epoch 047/050] - time taken: 1.810 | Loss: 0.345 | Acc: 83.425
+[Epoch 048/050] - time taken: 1.690 | Loss: 0.342 | Acc: 83.467
+[Epoch 049/050] - time taken: 1.712 | Loss: 0.340 | Acc: 83.632
+[Epoch 050/050] - time taken: 1.811 | Loss: 0.339 | Acc: 83.653
+model test - time taken: 0.408 | Loss: 0.996 | Acc: 76.904
+
+
+****************************************************************************************************************
+****************************************************************************************************************
+****************************************************************************************************************
+****************************************************************************************************************
+****************************************************************************************************************
+
+
+================================================
+================== train info ==================
+================================================
+Top frequency words range : 500
+Embedding Vectors dimension : 10
+Epoch Size : 50
+Batch Size : 500
+Learning Rate : 0.001
+train x shape : (145791, 80)
+train y shape : (145791,)
+test x shape : (48995, 80)
+test y shape : (48995,)
+model info : DNN(
+  (embedding): Embedding(502, 10)
+  (flatten): Flatten(start_dim=1, end_dim=-1)
+  (linear_a): Linear(in_features=800, out_features=64, bias=True)
+  (linear_b): Linear(in_features=64, out_features=64, bias=True)
+  (linear_c): Linear(in_features=64, out_features=1, bias=True)
+  (relu): ReLU()
+  (sigmoid): Sigmoid()
+)
+================================================
+================= train start ==================
+================================================
+[Epoch 001/050] - time taken: 1.892 | Loss: 0.653 | Acc: 60.051
+[Epoch 002/050] - time taken: 1.687 | Loss: 0.551 | Acc: 71.563
+[Epoch 003/050] - time taken: 1.900 | Loss: 0.494 | Acc: 75.392
+[Epoch 004/050] - time taken: 2.028 | Loss: 0.465 | Acc: 77.114
+[Epoch 005/050] - time taken: 1.754 | Loss: 0.447 | Acc: 78.186
+[Epoch 006/050] - time taken: 1.874 | Loss: 0.437 | Acc: 78.780
+[Epoch 007/050] - time taken: 1.675 | Loss: 0.431 | Acc: 79.086
+[Epoch 008/050] - time taken: 1.712 | Loss: 0.426 | Acc: 79.249
+[Epoch 009/050] - time taken: 1.715 | Loss: 0.423 | Acc: 79.503
+[Epoch 010/050] - time taken: 1.704 | Loss: 0.418 | Acc: 79.685
+[Epoch 011/050] - time taken: 1.816 | Loss: 0.414 | Acc: 80.011
+[Epoch 012/050] - time taken: 1.771 | Loss: 0.412 | Acc: 79.912
+[Epoch 013/050] - time taken: 1.693 | Loss: 0.409 | Acc: 80.097
+[Epoch 014/050] - time taken: 1.708 | Loss: 0.407 | Acc: 80.246
+[Epoch 015/050] - time taken: 1.689 | Loss: 0.405 | Acc: 80.246
+[Epoch 016/050] - time taken: 1.691 | Loss: 0.403 | Acc: 80.363
+[Epoch 017/050] - time taken: 1.671 | Loss: 0.400 | Acc: 80.461
+[Epoch 018/050] - time taken: 1.676 | Loss: 0.398 | Acc: 80.553
+[Epoch 019/050] - time taken: 1.682 | Loss: 0.397 | Acc: 80.626
+[Epoch 020/050] - time taken: 1.850 | Loss: 0.394 | Acc: 80.804
+[Epoch 021/050] - time taken: 1.723 | Loss: 0.394 | Acc: 80.763
+[Epoch 022/050] - time taken: 1.726 | Loss: 0.391 | Acc: 80.829
+[Epoch 023/050] - time taken: 1.895 | Loss: 0.389 | Acc: 81.041
+[Epoch 024/050] - time taken: 1.695 | Loss: 0.388 | Acc: 81.034
+[Epoch 025/050] - time taken: 1.690 | Loss: 0.388 | Acc: 81.021
+[Epoch 026/050] - time taken: 1.864 | Loss: 0.386 | Acc: 81.105
+[Epoch 027/050] - time taken: 1.712 | Loss: 0.384 | Acc: 81.235
+[Epoch 028/050] - time taken: 1.700 | Loss: 0.382 | Acc: 81.276
+[Epoch 029/050] - time taken: 1.689 | Loss: 0.381 | Acc: 81.292
+[Epoch 030/050] - time taken: 1.714 | Loss: 0.378 | Acc: 81.461
+[Epoch 031/050] - time taken: 1.769 | Loss: 0.378 | Acc: 81.580
+[Epoch 032/050] - time taken: 1.696 | Loss: 0.377 | Acc: 81.476
+[Epoch 033/050] - time taken: 1.693 | Loss: 0.375 | Acc: 81.543
+[Epoch 034/050] - time taken: 1.748 | Loss: 0.377 | Acc: 81.594
+[Epoch 035/050] - time taken: 1.680 | Loss: 0.374 | Acc: 81.675
+[Epoch 036/050] - time taken: 1.704 | Loss: 0.372 | Acc: 81.736
+[Epoch 037/050] - time taken: 1.876 | Loss: 0.371 | Acc: 81.818
+[Epoch 038/050] - time taken: 1.929 | Loss: 0.368 | Acc: 81.933
+[Epoch 039/050] - time taken: 1.807 | Loss: 0.367 | Acc: 82.034
+[Epoch 040/050] - time taken: 1.700 | Loss: 0.365 | Acc: 82.112
+[Epoch 041/050] - time taken: 1.685 | Loss: 0.364 | Acc: 82.139
+[Epoch 042/050] - time taken: 1.682 | Loss: 0.364 | Acc: 82.161
+[Epoch 043/050] - time taken: 1.700 | Loss: 0.364 | Acc: 82.127
+[Epoch 044/050] - time taken: 1.800 | Loss: 0.363 | Acc: 82.236
+[Epoch 045/050] - time taken: 1.717 | Loss: 0.360 | Acc: 82.331
+[Epoch 046/050] - time taken: 1.784 | Loss: 0.358 | Acc: 82.414
+[Epoch 047/050] - time taken: 1.838 | Loss: 0.357 | Acc: 82.523
+[Epoch 048/050] - time taken: 1.715 | Loss: 0.357 | Acc: 82.493
+[Epoch 049/050] - time taken: 1.745 | Loss: 0.360 | Acc: 82.462
+[Epoch 050/050] - time taken: 1.896 | Loss: 0.357 | Acc: 82.578
+model test - time taken: 0.414 | Loss: 0.999 | Acc: 77.892
+
+
+****************************************************************************************************************
+****************************************************************************************************************
+****************************************************************************************************************
+****************************************************************************************************************
+****************************************************************************************************************
+
+================================================
+================== train info ==================
+================================================
+Top frequency words range : 500
+Embedding Vectors dimension : 50
+Epoch Size : 50
+Batch Size : 500
+Learning Rate : 0.001
+train x shape : (145791, 80)
+train y shape : (145791,)
+test x shape : (48995, 80)
+test y shape : (48995,)
+model info : DNN(
+  (embedding): Embedding(502, 50)
+  (flatten): Flatten(start_dim=1, end_dim=-1)
+  (linear_a): Linear(in_features=4000, out_features=64, bias=True)
+  (linear_b): Linear(in_features=64, out_features=64, bias=True)
+  (linear_c): Linear(in_features=64, out_features=1, bias=True)
+  (relu): ReLU()
+  (sigmoid): Sigmoid()
+)
+================================================
+================= train start ==================
+================================================
+[Epoch 001/050] - time taken: 1.754 | Loss: 0.592 | Acc: 66.568
+[Epoch 002/050] - time taken: 1.847 | Loss: 0.479 | Acc: 76.170
+[Epoch 003/050] - time taken: 1.803 | Loss: 0.450 | Acc: 78.006
+[Epoch 004/050] - time taken: 1.724 | Loss: 0.441 | Acc: 78.506
+[Epoch 005/050] - time taken: 1.728 | Loss: 0.435 | Acc: 78.749
+[Epoch 006/050] - time taken: 1.854 | Loss: 0.432 | Acc: 78.864
+[Epoch 007/050] - time taken: 1.741 | Loss: 0.424 | Acc: 79.402
+[Epoch 008/050] - time taken: 1.751 | Loss: 0.422 | Acc: 79.457
+[Epoch 009/050] - time taken: 1.731 | Loss: 0.418 | Acc: 79.566
+[Epoch 010/050] - time taken: 1.906 | Loss: 0.415 | Acc: 79.822
+[Epoch 011/050] - time taken: 1.736 | Loss: 0.411 | Acc: 80.055
+[Epoch 012/050] - time taken: 1.720 | Loss: 0.408 | Acc: 79.982
+[Epoch 013/050] - time taken: 1.789 | Loss: 0.402 | Acc: 80.393
+[Epoch 014/050] - time taken: 1.741 | Loss: 0.399 | Acc: 80.464
+[Epoch 015/050] - time taken: 1.816 | Loss: 0.397 | Acc: 80.514
+[Epoch 016/050] - time taken: 1.786 | Loss: 0.393 | Acc: 80.770
+[Epoch 017/050] - time taken: 1.872 | Loss: 0.390 | Acc: 80.824
+[Epoch 018/050] - time taken: 1.740 | Loss: 0.385 | Acc: 81.058
+[Epoch 019/050] - time taken: 1.784 | Loss: 0.384 | Acc: 81.060
+[Epoch 020/050] - time taken: 1.958 | Loss: 0.381 | Acc: 81.305
+[Epoch 021/050] - time taken: 1.740 | Loss: 0.380 | Acc: 81.359
+[Epoch 022/050] - time taken: 1.731 | Loss: 0.375 | Acc: 81.514
+[Epoch 023/050] - time taken: 1.757 | Loss: 0.374 | Acc: 81.609
+[Epoch 024/050] - time taken: 1.930 | Loss: 0.371 | Acc: 81.746
+[Epoch 025/050] - time taken: 1.878 | Loss: 0.370 | Acc: 81.754
+[Epoch 026/050] - time taken: 1.722 | Loss: 0.363 | Acc: 82.109
+[Epoch 027/050] - time taken: 1.896 | Loss: 0.363 | Acc: 82.127
+[Epoch 028/050] - time taken: 1.727 | Loss: 0.363 | Acc: 82.073
+[Epoch 029/050] - time taken: 1.766 | Loss: 0.358 | Acc: 82.346
+[Epoch 030/050] - time taken: 1.855 | Loss: 0.355 | Acc: 82.510
+[Epoch 031/050] - time taken: 1.752 | Loss: 0.354 | Acc: 82.551
+[Epoch 032/050] - time taken: 1.747 | Loss: 0.351 | Acc: 82.735
+[Epoch 033/050] - time taken: 1.726 | Loss: 0.348 | Acc: 82.850
+[Epoch 034/050] - time taken: 1.758 | Loss: 0.347 | Acc: 82.803
+[Epoch 035/050] - time taken: 1.953 | Loss: 0.343 | Acc: 83.067
+[Epoch 036/050] - time taken: 1.810 | Loss: 0.341 | Acc: 83.184
+[Epoch 037/050] - time taken: 1.781 | Loss: 0.340 | Acc: 83.195
+[Epoch 038/050] - time taken: 1.770 | Loss: 0.334 | Acc: 83.523
+[Epoch 039/050] - time taken: 1.748 | Loss: 0.332 | Acc: 83.605
+[Epoch 040/050] - time taken: 1.720 | Loss: 0.330 | Acc: 83.707
+[Epoch 041/050] - time taken: 1.896 | Loss: 0.328 | Acc: 83.841
+[Epoch 042/050] - time taken: 1.766 | Loss: 0.326 | Acc: 83.930
+[Epoch 043/050] - time taken: 1.728 | Loss: 0.323 | Acc: 84.194
+[Epoch 044/050] - time taken: 1.717 | Loss: 0.321 | Acc: 84.181
+[Epoch 045/050] - time taken: 1.992 | Loss: 0.318 | Acc: 84.227
+[Epoch 046/050] - time taken: 1.813 | Loss: 0.315 | Acc: 84.433
+[Epoch 047/050] - time taken: 1.942 | Loss: 0.313 | Acc: 84.576
+[Epoch 048/050] - time taken: 1.835 | Loss: 0.309 | Acc: 84.832
+[Epoch 049/050] - time taken: 1.859 | Loss: 0.308 | Acc: 84.835
+[Epoch 050/050] - time taken: 1.716 | Loss: 0.306 | Acc: 84.931
+model test - time taken: 0.413 | Loss: 1.096 | Acc: 77.339
