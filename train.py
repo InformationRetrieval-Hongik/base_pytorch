@@ -27,8 +27,8 @@ embedding_dim = 10
 epoch_size = 100
 batch_size = 500
 
-# model = DNN(vocab_size=topN + 2, embedding_dim=embedding_dim, vector_len=80).to(device)
-model = LSTM(vocab_size=topN + 2, embedding_dim=embedding_dim, vector_len=80, unit_num=128).to(device)
+model = DNN(vocab_size=topN + 2, embedding_dim=embedding_dim, vector_len=80).to(device)
+# model = LSTM(vocab_size=topN + 2, embedding_dim=embedding_dim, vector_len=80, unit_num=128).to(device)
 
 lr = 0.001
 optimizer = optim.Adam(model.parameters(), lr=lr)
@@ -117,4 +117,29 @@ for epoch_i in range(epoch_size):
         "[Epoch %03d/%03d] - time taken: %.3f | Loss: %.3f | Acc: %.3f"
         % (epoch_i + 1, epoch_size, per_epoch_time, torch.mean(torch.FloatTensor(losses_per_iter)), np.mean(acc_per_iter) * 100)
     )
+
+model.eval()
+test_start_time = time.time()
+
+losses_per_iter = []
+acc_per_iter = []
+for (batch_x, batch_y) in test_loader:
+    batch_x, batch_y = batch_x.to(device), batch_y.to(device)
+    pred_y = model(batch_x)
+
+    # initialize optimizer to make gradient be zero.
+    optimizer.zero_grad()
+
+    # calculate loss value per iter.
+    iter_loss = loss(pred_y, batch_y.view(-1, 1))
+    losses_per_iter.append(iter_loss.item())
+
+    # calculate accuary per iter.
+    pred_count = pred_y.detach().cpu().numpy() >= 0.5
+    ans_count = batch_y.view(-1, 1).cpu().numpy() == 1
+    acc = np.mean(pred_count == ans_count)
+    acc_per_iter.append(acc)
+
+total_test_time = time.time() - test_start_time
+print("model test - time taken: %.3f | Loss: %.3f | Acc: %.3f" % (total_test_time, torch.mean(torch.FloatTensor(losses_per_iter)), np.mean(acc_per_iter) * 100))
 
