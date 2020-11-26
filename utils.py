@@ -122,7 +122,7 @@ if __name__ == "__main__":
     # ========= process that get a Top N lookup table from comprehensive data set[ratings.txt] =========
     # ==================================================================================================
 
-    topN = 1000
+    topN = 100
 
     if not os.path.isfile("./dataSet/top_%d_words.josn" % (topN)) and not os.path.isfile("./dataSet/top_%d_index.json" % (topN)):
         dataDocs = loadDocs("./dataSet/dataDocs.pkl")
@@ -132,12 +132,15 @@ if __name__ == "__main__":
 
         # get TOP N tokens with the highest frequency of output.
         saveTopNwords(dataTokens=dataTokens, topN=topN, filePath="./dataSet/top_%d_words.json" % (topN))
+        topN_words = loadTopNwords("./dataSet/top_%d_words.json" % (topN))
 
         # convert frequency words dictionary to lookup table.
         saveTopNindex(topN_words=topN_words, topN=topN, filePath="./dataSet/top_%d_index.json" % (topN))
+        topN_index = loadTopNindex("./dataSet/top_%d_index.json" % (topN))
 
-    topN_words = loadTopNwords("./dataSet/top_%d_words.json" % (topN))
-    topN_index = loadTopNindex("./dataSet/top_%d_index.json" % (topN))
+    else:
+        topN_words = loadTopNwords("./dataSet/top_%d_words.json" % (topN))
+        topN_index = loadTopNindex("./dataSet/top_%d_index.json" % (topN))
 
     # ==================================================================================================
     # === process that encode train data[ratings_train.txt] to integer data type(lookup table index) ===
