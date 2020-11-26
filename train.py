@@ -1,17 +1,19 @@
 import os
 import numpy as np
 import time
+import sys
 
 import torch
 import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 
-from models import DNN
+from models import DNN, LSTM
 
 from torch.utils.data import TensorDataset, DataLoader
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# device = "cpu"
 if torch.backends.cudnn.enabled:
     torch.backends.cudnn.benchmark = True
 
@@ -19,13 +21,14 @@ if torch.backends.cudnn.enabled:
 # ======================================== Hyper Parameters ========================================
 # ==================================================================================================
 
-topN = 1000
+topN = 100
 embedding_dim = 10
 
 epoch_size = 100
 batch_size = 500
 
-model = DNN(vocab_size=topN + 2, embedding_dim=embedding_dim, vector_len=80).to(device)
+# model = DNN(vocab_size=topN + 2, embedding_dim=embedding_dim, vector_len=80).to(device)
+model = LSTM(vocab_size=topN + 2, embedding_dim=embedding_dim, vector_len=80, unit_num=128).to(device)
 
 lr = 0.001
 optimizer = optim.Adam(model.parameters(), lr=lr)
@@ -41,9 +44,9 @@ test_y = np.load(os.path.join(dataPath, "test_y_for_top_%d.npy" % (topN)))
 # ======================================== print train info ========================================
 # ==================================================================================================
 
-print("=================================================")
-print("=============== train info prints ===============")
-print("=================================================")
+print("================================================")
+print("================== train info ==================")
+print("================================================")
 
 print("Top frequency words range :", topN)
 print("Embedding Vectors dimension :", embedding_dim)
@@ -62,12 +65,12 @@ print("test y shape :", test_y.shape)
 print("model info :", model)
 
 # ==================================================================================================
-# ===================================== make batch data loader =====================================
+# ========================================== model train  ==========================================
 # ==================================================================================================
 
-print("=================================================")
-print("================== train start ==================")
-print("=================================================")
+print("================================================")
+print("================= train start ==================")
+print("================================================")
 
 train_x = torch.LongTensor(train_x)
 train_y = torch.FloatTensor(train_y)
@@ -83,6 +86,7 @@ test_loader = DataLoader(test_set, batch_size, shuffle=True)
 
 
 for epoch_i in range(epoch_size):
+    model.train()
     epoch_start_time = time.time()
 
     losses_per_iter = []
@@ -94,19 +98,23 @@ for epoch_i in range(epoch_size):
         # initialize optimizer to make gradient be zero.
         optimizer.zero_grad()
 
+        # calculate loss value per iter.
         iter_loss = loss(pred_y, batch_y.view(-1, 1))
         losses_per_iter.append(iter_loss.item())
 
+        # calculate gradient and
+        iter_loss.backward()
+        optimizer.step()
+
+        # calculate accuary per iter.
         pred_count = pred_y.detach().cpu().numpy() >= 0.5
-        ans_count = batch_y.view(-1, 1).cpu().numpy() >= 0.5
+        ans_count = batch_y.view(-1, 1).cpu().numpy() == 1
         acc = np.mean(pred_count == ans_count)
         acc_per_iter.append(acc)
 
-        iter_loss.backward()
-        optimizer.step()
     per_epoch_time = time.time() - epoch_start_time
     print(
         "[Epoch %03d/%03d] - time taken: %.3f | Loss: %.3f | Acc: %.3f"
-        % (epoch_i + 1, epoch_size, per_epoch_time, torch.mean(torch.FloatTensor(losses_per_iter)), np.mean(acc_per_iter))
+        % (epoch_i + 1, epoch_size, per_epoch_time, torch.mean(torch.FloatTensor(losses_per_iter)), np.mean(acc_per_iter) * 100)
     )
 
