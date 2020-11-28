@@ -122,31 +122,32 @@ if __name__ == "__main__":
     # ========= process that get a Top N lookup table from comprehensive data set[ratings.txt] =========
     # ==================================================================================================
 
-    topN = 500
+    topN = 10000
+    maxLen = 30
 
-    if not os.path.isfile("./dataSet/top_%d_words.josn" % (topN)) and not os.path.isfile("./dataSet/top_%d_index.json" % (topN)):
+    if not os.path.isfile("./dataSet/top_%d_maxLen_%d_words.json" % (topN, maxLen)) and not os.path.isfile("./dataSet/top_%d_maxLen_%d_index.json" % (topN, maxLen)):
         dataDocs = loadDocs("./dataSet/dataDocs.pkl")
 
         # get all tokens from dataDocs.
         dataTokens = [token for doc in dataDocs for token in doc[0]]
 
         # get TOP N tokens with the highest frequency of output.
-        saveTopNwords(dataTokens=dataTokens, topN=topN, filePath="./dataSet/top_%d_words.json" % (topN))
-        topN_words = loadTopNwords("./dataSet/top_%d_words.json" % (topN))
+        saveTopNwords(dataTokens=dataTokens, topN=topN, filePath="./dataSet/top_%d_maxLen_%d_words.json" % (topN, maxLen))
+        topN_words = loadTopNwords("./dataSet/top_%d_maxLen_%d_words.json" % (topN, maxLen))
 
         # convert frequency words dictionary to lookup table.
-        saveTopNindex(topN_words=topN_words, topN=topN, filePath="./dataSet/top_%d_index.json" % (topN))
-        topN_index = loadTopNindex("./dataSet/top_%d_index.json" % (topN))
+        saveTopNindex(topN_words=topN_words, topN=topN, filePath="./dataSet/top_%d_maxLen_%d_index.json" % (topN, maxLen))
+        topN_index = loadTopNindex("./dataSet/top_%d_maxLen_%d_index.json" % (topN, maxLen))
 
     else:
-        topN_words = loadTopNwords("./dataSet/top_%d_words.json" % (topN))
-        topN_index = loadTopNindex("./dataSet/top_%d_index.json" % (topN))
+        topN_words = loadTopNwords("./dataSet/top_%d_maxLen_%d_words.json" % (topN, maxLen))
+        topN_index = loadTopNindex("./dataSet/top_%d_maxLen_%d_index.json" % (topN, maxLen))
 
     # ==================================================================================================
     # === process that encode train data[ratings_train.txt] to integer data type(lookup table index) ===
     # ==================================================================================================
 
-    if not os.path.isfile("./dataSet/train_x_for_top_%d.npy" % (topN)) and not os.path.isfile("./dataSet/train_y_for_top_%d.npy" % (topN)):
+    if not os.path.isfile("./dataSet/train_x_for_top_%d_maxLen_%d.npy" % (topN, maxLen)) and not os.path.isfile("./dataSet/train_y_for_top_%d_maxLen_%d.npy" % (topN, maxLen)):
         trainDocs = loadDocs("./dataSet/trainDocs.pkl")
         print("train Docs list length :", len(trainDocs))
 
@@ -158,23 +159,22 @@ if __name__ == "__main__":
             train_y.append(y)
         prev_train_x = train_x.copy()
 
-        maxLen = 80
-        lookupTable = loadTopNindex("./dataSet/top_%d_index.json" % (topN))
+        lookupTable = loadTopNindex("./dataSet/top_%d_maxLen_%d_index.json" % (topN, maxLen))
         train_x = encodeToInt(train_x, lookupTable, maxLen)  # get numpy array that converted from morpheme to interger(lookup table index value)
         train_y = np.array(train_y)
 
-        np.save("./dataSet/train_x_for_top_%d.npy" % (topN), train_x)
-        np.save("./dataSet/train_y_for_top_%d.npy" % (topN), train_y)
+        np.save("./dataSet/train_x_for_top_%d_maxLen_%d.npy" % (topN, maxLen), train_x)
+        np.save("./dataSet/train_y_for_top_%d_maxLen_%d.npy" % (topN, maxLen), train_y)
     else:
         print("train set already saved.")
-        train_x = np.load("./dataSet/train_x_for_top_%d.npy" % (topN))
-        train_y = np.load("./dataSet/train_y_for_top_%d.npy" % (topN))
+        train_x = np.load("./dataSet/train_x_for_top_%d_maxLen_%d.npy" % (topN, maxLen))
+        train_y = np.load("./dataSet/train_y_for_top_%d_maxLen_%d.npy" % (topN, maxLen))
 
     # ==================================================================================================
     # ==== process that encode test data[ratings_test.txt] to integer data type(lookup table index) ====
     # ==================================================================================================
 
-    if not os.path.isfile("./dataSet/test_x_for_top_%d.npy" % (topN)) and not os.path.isfile("./dataSet/test_y_for_top_%d.npy" % (topN)):
+    if not os.path.isfile("./dataSet/test_x_for_top_%d_maxLen_%d.npy" % (topN, maxLen)) and not os.path.isfile("./dataSet/test_y_for_top_%d_maxLen_%d.npy" % (topN, maxLen)):
         testDocs = loadDocs("./dataSet/testDocs.pkl")
         print("test Docs list length :", len(testDocs))
 
@@ -185,14 +185,13 @@ if __name__ == "__main__":
             test_x.append(x)
             test_y.append(y)
 
-        maxLen = 80
-        lookupTable = loadTopNindex("./dataSet/top_%d_index.json" % (topN))
+        lookupTable = loadTopNindex("./dataSet/top_%d_maxLen_%d_index.json" % (topN, maxLen))
         test_x = encodeToInt(test_x, lookupTable, maxLen)  # get numpy array that converted from morpheme to interger(lookup table index value)
         test_y = np.array(test_y)
 
-        np.save("./dataSet/test_x_for_top_%d.npy" % (topN), test_x)
-        np.save("./dataSet/test_y_for_top_%d.npy" % (topN), test_y)
+        np.save("./dataSet/test_x_for_top_%d_maxLen_%d.npy" % (topN, maxLen), test_x)
+        np.save("./dataSet/test_y_for_top_%d_maxLen_%d.npy" % (topN, maxLen), test_y)
     else:
         print("train set already saved.")
-        train_x = np.load("./dataSet/train_x_for_top_%d.npy" % (topN))
-        train_y = np.load("./dataSet/train_y_for_top_%d.npy" % (topN))
+        train_x = np.load("./dataSet/train_x_for_top_%d_maxLen_%d.npy" % (topN, maxLen))
+        train_y = np.load("./dataSet/train_y_for_top_%d_maxLen_%d.npy" % (topN, maxLen))

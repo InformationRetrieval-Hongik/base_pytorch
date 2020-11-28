@@ -27,7 +27,7 @@ class LSTM(nn.Module):
     def __init__(self, vocab_size=1002, embedding_dim=10, vector_len=80, unit_num=128):
         super(LSTM, self).__init__()
         self.embedding = nn.Embedding(vocab_size, embedding_dim)  # output shape: [batch size, vector len, embedding_dim]
-        self.lstm = nn.LSTM(embedding_dim, unit_num, batch_first=True)  # output shape: [batch size, vector len, unit num]
+        self.lstm = nn.LSTM(embedding_dim, unit_num, num_layers=2, batch_first=True)  # output shape: [batch size, vector len, unit num]
         self.flatten = nn.Flatten()
         self.linear = nn.Linear(unit_num, 1)
         self.sigmoid = nn.Sigmoid()
