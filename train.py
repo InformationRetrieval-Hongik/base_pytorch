@@ -12,10 +12,12 @@ import torch.nn.functional as F
 from models import DNN, LSTM
 
 from torch.utils.data import TensorDataset, DataLoader
-from pytorch_model_summary import summary
+
+# from pytorch_model_summary import summary
+from utils import summary
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-# device = "cpu"
+# device = "cuda" if torch.cuda.is_available() else "cpu"
 if torch.backends.cudnn.enabled:
     torch.backends.cudnn.benchmark = True
 
@@ -31,7 +33,7 @@ epoch_size = 20
 batch_size = 500
 
 model = DNN(vocab_size=topN + 2, embedding_dim=embedding_dim, vector_len=vector_len).to(device)
-# model = LSTM(vocab_size=topN + 2, embedding_dim=embedding_dim, vector_len=vector_len, unit_num=128).to(device)
+# model = LSTM(vocab_size=topN + 2, embedding_dim=embedding_dim, vector_len=vector_len, unit_num=128)
 
 lr = 0.001
 optimizer = optim.Adam(model.parameters(), lr=lr)
@@ -66,7 +68,8 @@ print("test x shape :", test_x.shape)
 print("test y shape :", test_y.shape)
 
 print("models :")
-print(summary(model, torch.zeros(1, vector_len).type(torch.LongTensor).to(device), show_input=True))
+# print(summary(model, torch.zeros(1, vector_len).type(torch.LongTensor).to(device), show_input=True))
+summary(model, input_size=(vector_len,), device="cuda" if device == torch.device("cuda") else "cpu")
 
 # ==================================================================================================
 # ========================================== model train  ==========================================

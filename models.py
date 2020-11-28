@@ -16,9 +16,9 @@ class DNN(nn.Module):
 
     def forward(self, x):
         embedding_vec = self.embedding(x)
-        linear_vec = self.relu(self.linear_a(self.flatten(embedding_vec)))
-        linear_vec = self.relu(self.linear_b(linear_vec))
-        out = self.sigmoid(self.linear_c(linear_vec))
+        linear_vec_a = self.relu(self.linear_a(self.flatten(embedding_vec)))
+        linear_vec_b = self.relu(self.linear_b(linear_vec_a))
+        out = self.sigmoid(self.linear_c(linear_vec_b))
 
         return out
 
@@ -33,6 +33,8 @@ class LSTM(nn.Module):
         self.sigmoid = nn.Sigmoid()
 
     def forward(self, x):
+        if x.dtype != torch.LongTensor:
+            x = x.type(torch.LongTensor)
         embedding_vec = self.embedding(x)
         lstm_vec = self.lstm(embedding_vec)[0]
         out = self.sigmoid(self.linear(self.flatten(lstm_vec[:, -1, :])))
