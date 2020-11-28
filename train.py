@@ -26,7 +26,7 @@ topN = 10000
 embedding_dim = 100
 vector_len = 80
 
-epoch_size = 10
+epoch_size = 20
 batch_size = 500
 
 model = DNN(vocab_size=topN + 2, embedding_dim=embedding_dim, vector_len=vector_len).to(device)
@@ -87,11 +87,6 @@ validation_y = torch.FloatTensor(train_y[divide_idx:,])
 
 train_x = torch.LongTensor(train_x[:divide_idx,])
 train_y = torch.FloatTensor(train_y[:divide_idx,])
-
-print(train_x.shape)
-print(train_y.shape)
-print(validation_x.shape)
-print(validation_y.shape)
 
 test_x = torch.LongTensor(test_x)
 test_y = torch.FloatTensor(test_y)
@@ -157,8 +152,7 @@ for epoch_i in range(epoch_size):
             validation_acc = np.mean(pred_count == ans_count)
             acc_per_validation.append(validation_acc)
     print(
-        "[Epoch %03d/%03d] - time taken: %.3f | Loss: %.3f | Acc: %.3f | validation Loss: %.3f | validation Acc : %.3f"
-        % (epoch_i + 1, epoch_size, per_epoch_time, np.mean(losses_per_epoch), np.mean(acc_per_epoch) * 100, np.mean(losses_per_validation), np.mean(acc_per_validation) * 100,)
+        f"[Epoch {epoch_i + 1:03}/{epoch_size:03}] - time taken: {per_epoch_time:.3f} | Loss: {np.mean(losses_per_epoch):.3f} | Acc: {np.mean(acc_per_epoch) * 100:.3f} | validation Loss: {np.mean(losses_per_validation):.3f} | validation Acc : {np.mean(acc_per_validation) * 100:.3f}"
     )
 
     loss_hist.append(np.mean(losses_per_epoch))
@@ -166,7 +160,6 @@ for epoch_i in range(epoch_size):
     val_loss_hist.append(np.mean(losses_per_validation))
     val_acc_hist.append(np.mean(acc_per_validation) * 100)
 
-print("model training is all done.")
 
 model.eval()
 test_start_time = time.time()
@@ -188,12 +181,13 @@ for (batch_x, batch_y) in test_loader:
     acc_per_iter.append(acc)
 
 total_test_time = time.time() - test_start_time
-print("model test - time taken: %.3f | Loss: %.3f | Acc: %.3f" % (total_test_time, np.mean(losses_per_iter), np.mean(acc_per_iter) * 100))
+print(f"[{'model test':^13s}] - time taken: {total_test_time:.3f} | Loss: {np.mean(losses_per_iter):.3f} | Acc: {np.mean(acc_per_iter) * 100:.3f}")
+
+print("================================================")
+print("========= model training is all done ===========")
+print("================================================")
 
 # plot training result figures.
-plt.title("Model train result.")
-plt.xlabel("Epoch")
-
 plt.figure(figsize=(16, 8))
 
 x = np.arange(1, epoch_size + 1)
@@ -201,10 +195,17 @@ x = np.arange(1, epoch_size + 1)
 plt.subplot(121)
 plt.plot(x, loss_hist)
 plt.plot(x, val_loss_hist)
+plt.xlabel("epoch")
+plt.ylabel("loss")
+plt.grid()
 plt.legend(["loss", "validation loss"])
-plt.show()
 
 plt.subplot(122)
 plt.plot(x, acc_hist)
 plt.plot(x, val_acc_hist)
+plt.xlabel("epoch")
+plt.ylabel("accuracy")
+plt.grid()
 plt.legend(["accuracy", "validation accuracy"])
+
+plt.show()
