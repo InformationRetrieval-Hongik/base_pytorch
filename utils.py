@@ -116,8 +116,14 @@ from torch.autograd import Variable
 from collections import OrderedDict
 import numpy as np
 
-# Original Codes in torchsummary of python package.
+
 def summary(model, input_size, batch_size=-1, device="cuda"):
+    """
+    Original Codes in torchsummary package.
+    That package use torch.FloatTensor, but it does not match out model(match only torch.LongTensor)
+    So we scratch source codes from torchsummary, and correct it appropriately.
+    """
+
     def register_hook(module):
         def hook(module, input, output):
             class_name = str(module.__class__).split(".")[-1].split("'")[0]
@@ -147,7 +153,11 @@ def summary(model, input_size, batch_size=-1, device="cuda"):
     device = device.lower()
     assert device in ["cuda", "cpu",], "Input device is not valid, please specify 'cuda' or 'cpu'"
 
+    """
+    we corrected this lines(159-163)
+    """
     if device == "cuda" and torch.cuda.is_available():
+
         dtype = torch.cuda.LongTensor
     else:
         dtype = torch.LongTensor
