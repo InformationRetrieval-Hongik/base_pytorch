@@ -12,6 +12,7 @@ import torch.nn.functional as F
 from models import DNN, LSTM
 
 from torch.utils.data import TensorDataset, DataLoader
+from pytorch_model_summary import summary
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # device = "cpu"
@@ -63,6 +64,9 @@ print("train y shape :", train_y.shape)
 
 print("test x shape :", test_x.shape)
 print("test y shape :", test_y.shape)
+
+print("models :")
+print(summary(model, torch.zeros(1, vector_len).type(torch.LongTensor).to(device), show_input=True))
 
 # ==================================================================================================
 # ========================================== model train  ==========================================
@@ -185,7 +189,10 @@ print("================================================")
 print("========= model training is all done ===========")
 print("================================================")
 
-# plot training result figures.
+# ==================================================================================================
+# =================================== plot train result figures +===================================
+# ==================================================================================================
+
 plt.figure(figsize=(16, 8))
 
 x = np.arange(1, epoch_size + 1)
