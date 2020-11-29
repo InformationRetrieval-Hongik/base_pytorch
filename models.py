@@ -67,8 +67,12 @@ class Res_CNN(nn.Module):
         self.conv_02_2 = nn.Conv2d(filter_size, filter_size, 3)
         self.norm_02_2 = nn.BatchNorm2d(filter_size)
 
+        self.pad_03_1 = nn.ZeroPad2d((0, 0, 1, 1))
+        self.conv_03_1 = nn.Conv2d(filter_size, 1, (3, int(embedding_dim / 2)))
+        self.norm_03_1 = nn.BatchNorm2d(1)
+
         self.flatten = nn.Flatten()
-        self.linear = nn.Linear(filter_size * int(vector_len / 2) * int(embedding_dim / 2), 1)
+        self.linear = nn.Linear(int(vector_len / 2), 1)
 
         self.sigmoid = nn.Sigmoid()
         self.relu = nn.ReLU()
@@ -85,7 +89,9 @@ class Res_CNN(nn.Module):
         conv_vec_2 = self.relu(self.norm_02_1(self.conv_02_1(self.pad_02_1(conv_vec_1))))
         conv_vec_3 = self.relu(self.norm_02_2(self.conv_02_2(self.pad_02_2(conv_vec_2)))) + conv_vec_1
 
-        out = self.sigmoid(self.linear(self.flatten(conv_vec_2)))
+        conv_vec_4 = self.relu(self.norm_03_1(self.conv_03_1(self.pad_03_1(conv_vec_3))))
+
+        out = self.sigmoid(self.linear(self.flatten(conv_vec_4)))
 
         return out
 

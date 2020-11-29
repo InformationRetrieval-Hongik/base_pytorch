@@ -33,8 +33,8 @@ epoch_size = 20
 batch_size = 500
 
 # model = DNN(vocab_size=topN + 2, embedding_dim=embedding_dim, vector_len=vector_len).to(device)
-model = LSTM(vocab_size=topN + 2, embedding_dim=embedding_dim, vector_len=vector_len, unit_num=128).to(device)
-# model = Res_CNN(vocab_size=topN + 2, embedding_dim=embedding_dim, vector_len=vector_len, filter_size=32).to(device)
+# model = LSTM(vocab_size=topN + 2, embedding_dim=embedding_dim, vector_len=vector_len, unit_num=128).to(device)
+model = Res_CNN(vocab_size=topN + 2, embedding_dim=embedding_dim, vector_len=vector_len, filter_size=32).to(device)
 
 lr = 0.001
 optimizer = optim.Adam(model.parameters(), lr=lr)
@@ -68,8 +68,8 @@ print("train y shape :", train_y.shape)
 print("test x shape :", test_x.shape)
 print("test y shape :", test_y.shape)
 
-print("models :")
-summary(model, input_size=(vector_len,), device="cuda" if device == torch.device("cuda") else "cpu")
+# print("models :")
+# summary(model, input_size=(vector_len,), device="cuda" if device == torch.device("cuda") else "cpu")
 
 # ==================================================================================================
 # ========================================== model train  ==========================================
@@ -205,7 +205,7 @@ plt.plot(x, loss_hist)
 plt.plot(x, val_loss_hist)
 plt.xlabel("epoch")
 plt.ylabel("loss")
-plt.grid()
+# plt.grid()
 plt.legend(["loss", "validation loss"])
 
 plt.subplot(122)
@@ -213,7 +213,7 @@ plt.plot(x, acc_hist)
 plt.plot(x, val_acc_hist)
 plt.xlabel("epoch")
 plt.ylabel("accuracy")
-plt.grid()
+# plt.grid()
 plt.legend(["accuracy", "validation accuracy"])
 
 plt.show()
