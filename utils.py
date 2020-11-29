@@ -112,21 +112,24 @@ def encodeToInt(train_x, lookupTable, maxLen):
 
 if __name__ == "__main__":
     if not os.path.isfile("./dataSet/trainDocs.pkl"):
-        train_df = pd.read_csv("./dataSet/nsmc-master/ratings_train.txt", "\t")
+        train_df = pd.read_csv("./nsmc-master/ratings_train.txt", "\t")
         saveDocs(train_df, "./dataSet/trainDocs.pkl")
     if not os.path.isfile("./dataSet/testDocs.pkl"):
-        test_df = pd.read_csv("./dataSet/nsmc-master/ratings_test.txt", "\t")
+        test_df = pd.read_csv("./nsmc-master/ratings_test.txt", "\t")
         saveDocs(test_df, "./dataSet/testDocs.pkl")
     if not os.path.isfile("./dataSet/dataDocs.pkl"):
-        data_df = pd.read_table("./dataSet/nsmc-master/ratings.txt")
+        data_df = pd.read_table("./nsmc-master/ratings.txt")
         saveDocs(data_df, "./dataSet/dataDocs.pkl")
 
     # ==================================================================================================
     # ========= process that get a Top N lookup table from comprehensive data set[ratings.txt] =========
     # ==================================================================================================
 
+    """
+    topN 과 maxLen을 변경하여 데이터 셋의 전처리를 변경할 수 있습니다.
+    """
     topN = 10000
-    maxLen = 30
+    maxLen = 80
 
     if not os.path.isfile("./dataSet/top_%d_maxLen_%d_words.json" % (topN, maxLen)) and not os.path.isfile("./dataSet/top_%d_maxLen_%d_index.json" % (topN, maxLen)):
         dataDocs = loadDocs("./dataSet/dataDocs.pkl")

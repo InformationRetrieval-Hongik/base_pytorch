@@ -1,0 +1,5 @@
+DNN
+Res_CNN
+Bi_GRU_layer_2
+BiLSTM_with_Attention_2_layer
+Multi_Channel_CNN

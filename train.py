@@ -9,17 +9,24 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 
-from models import DNN, LSTM, Res_CNN
+from models import DNN, Res_CNN, Bi_GRU_layer_2, BILSTM_withAttention2layer, Multi_Channel_CNN
 
 from torch.utils.data import TensorDataset, DataLoader
 
-# from pytorch_model_summary import summary
-from utils import summary
-
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-# device = "cuda" if torch.cuda.is_available() else "cpu"
 if torch.backends.cudnn.enabled:
     torch.backends.cudnn.benchmark = True
+
+"""
+학습을 진행하는 파이썬 파일입니다.
+이전에 파이토치 프레임워크를 사용해서 딥러닝을 학습해본 경험이 있어서 참고 없이 스스로 구현했습니다.
+학습을 진행하기 위해,
+train_x_for_top_10000_maxLen_80.npy
+train_y_for_top_10000_maxLen_80.npy
+test_x_for_top_10000_maxLen_80.npy
+test_y_for_top_10000_maxLen_80.npy
+이 필요합니다. utils.py를 한번 실행시켜서 해당 데이터셋을 생성하고 train.py를 실행해야 합니다.
+"""
 
 # ==================================================================================================
 # ======================================== Hyper Parameters ========================================
@@ -33,18 +40,29 @@ epoch_size = 20
 batch_size = 500
 
 # model = DNN(vocab_size=topN + 2, embedding_dim=embedding_dim, vector_len=vector_len).to(device)
-# model = LSTM(vocab_size=topN + 2, embedding_dim=embedding_dim, vector_len=vector_len, unit_num=128).to(device)
-model = Res_CNN(vocab_size=topN + 2, embedding_dim=embedding_dim, vector_len=vector_len, filter_size=32).to(device)
+# model = Res_CNN(vocab_size=topN + 2, embedding_dim=embedding_dim, vector_len=vector_len, filter_size=32).to(device)
+# model = Bi_GRU_layer_2(vocab_size=topN + 2)
+# model = BILSTM_withAttention2layer(vocab_size=topN + 2, embedding_dim=embedding_dim, vector_len=vector_len, unit_num=128).to(device)
+# model = Multi_Channel_CNN(
+#     vocab_size=topN + 2,
+#     embedding_dim=embedding_dim,
+#     vector_len=vector_len,
+#     n_filters_a=n_filters_a,
+#     n_filters_b=n_filters_b,
+#     filter_sizes_a=filter_sizes_a,
+#     filter_sizes_b=filter_sizes_b,
+#     dropout=dropout,
+# ).to(device)
 
 lr = 0.001
 optimizer = optim.Adam(model.parameters(), lr=lr)
 loss = torch.nn.BCELoss().to(device)
 
 dataPath = "./dataSet"
-train_x = np.load(os.path.join(dataPath, "train_x_for_top_%d.npy" % (topN)))
-train_y = np.load(os.path.join(dataPath, "train_y_for_top_%d.npy" % (topN)))
-test_x = np.load(os.path.join(dataPath, "test_x_for_top_%d.npy" % (topN)))
-test_y = np.load(os.path.join(dataPath, "test_y_for_top_%d.npy" % (topN)))
+train_x = np.load(os.path.join(dataPath, "train_x_for_top_%d_maxLen_%d.npy" % (topN, vector_len)))
+train_y = np.load(os.path.join(dataPath, "train_y_for_top_%d_maxLen_%d.npy" % (topN, vector_len)))
+test_x = np.load(os.path.join(dataPath, "test_x_for_top_%d_maxLen_%d.npy" % (topN, vector_len)))
+test_y = np.load(os.path.join(dataPath, "test_y_for_top_%d_maxLen_%d.npy" % (topN, vector_len)))
 
 # ==================================================================================================
 # ======================================== print train info ========================================
@@ -67,9 +85,6 @@ print("train y shape :", train_y.shape)
 
 print("test x shape :", test_x.shape)
 print("test y shape :", test_y.shape)
-
-# print("models :")
-# summary(model, input_size=(vector_len,), device="cuda" if device == torch.device("cuda") else "cpu")
 
 # ==================================================================================================
 # ========================================== model train  ==========================================
@@ -205,7 +220,7 @@ plt.plot(x, loss_hist)
 plt.plot(x, val_loss_hist)
 plt.xlabel("epoch")
 plt.ylabel("loss")
-# plt.grid()
+plt.grid()
 plt.legend(["loss", "validation loss"])
 
 plt.subplot(122)
@@ -213,7 +228,7 @@ plt.plot(x, acc_hist)
 plt.plot(x, val_acc_hist)
 plt.xlabel("epoch")
 plt.ylabel("accuracy")
-# plt.grid()
+plt.grid()
 plt.legend(["accuracy", "validation accuracy"])
 
 plt.show()
