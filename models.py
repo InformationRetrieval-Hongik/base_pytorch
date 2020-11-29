@@ -4,40 +4,88 @@ import torch.nn.functional as F
 
 
 class DNN(nn.Module):
-    def __init__(self, vocab_size=1002, embedding_dim=10, vector_len=80):
+    def __init__(self, vocab_size=10002, embedding_dim=100, vector_len=80, hidden_size=64):
         super(DNN, self).__init__()
-        self.embedding = nn.Embedding(vocab_size, embedding_dim)
+        self.embedding = nn.Embedding(vocab_size, embedding_dim)  # output shape: [batch size, vector len, embedding_dim]
+
         self.flatten = nn.Flatten()
-        self.linear_a = nn.Linear(vector_len * embedding_dim, 64)
-        self.linear_b = nn.Linear(64, 64)
-        self.linear_c = nn.Linear(64, 1)
-        self.relu = nn.ReLU()
+        self.linear_01 = nn.Linear(vector_len * embedding_dim, hidden_size)
+        self.norm_01 = nn.BatchNorm1d(hidden_size)
+
+        self.linear_02 = nn.Linear(hidden_size, hidden_size)
+        self.norm_02 = nn.BatchNorm1d(hidden_size)
+
+        self.linear_03 = nn.Linear(hidden_size, 1)
+
         self.sigmoid = nn.Sigmoid()
+        self.relu = nn.ReLU()
 
     def forward(self, x):
         embedding_vec = self.embedding(x)
-        linear_vec_a = self.relu(self.linear_a(self.flatten(embedding_vec)))
-        linear_vec_b = self.relu(self.linear_b(linear_vec_a))
-        out = self.sigmoid(self.linear_c(linear_vec_b))
+
+        linear_vec_1 = self.relu(self.norm_01(self.linear_01(self.flatten(embedding_vec))))
+        linear_vec_2 = self.relu(self.norm_02(self.linear_02(linear_vec_1)))
+        out = self.sigmoid((self.linear_03(linear_vec_2)))
 
         return out
 
 
 class LSTM(nn.Module):
-    def __init__(self, vocab_size=1002, embedding_dim=10, vector_len=80, unit_num=128):
+    def __init__(self, vocab_size=10002, embedding_dim=100, vector_len=80, unit_num=128):
         super(LSTM, self).__init__()
         self.embedding = nn.Embedding(vocab_size, embedding_dim)  # output shape: [batch size, vector len, embedding_dim]
+
         self.lstm = nn.LSTM(embedding_dim, unit_num, num_layers=2, batch_first=True)  # output shape: [batch size, vector len, unit num]
+
         self.flatten = nn.Flatten()
         self.linear = nn.Linear(unit_num, 1)
+
         self.sigmoid = nn.Sigmoid()
 
     def forward(self, x):
-        if x.dtype != torch.LongTensor:
-            x = x.type(torch.LongTensor)
         embedding_vec = self.embedding(x)
         lstm_vec = self.lstm(embedding_vec)[0]
-        out = self.sigmoid(self.linear(self.flatten(lstm_vec[:, -1, :])))
+        out = self.sigmoid(self.linear(self.flatten(lstm_vec[:, -1, :])))  # use last cell output of lstm layer
+
+        return out
+
+
+class Res_CNN(nn.Module):
+    def __init__(self, vocab_size=10002, embedding_dim=100, vector_len=80, filter_size=6):
+        super(Res_CNN, self).__init__()
+        self.embedding = nn.Embedding(vocab_size, embedding_dim)  # output shape: [batch size, vector len, embedding_dim]
+
+        self.pad_01_1 = nn.ZeroPad2d(3)
+        self.conv_01_1 = nn.Conv2d(1, filter_size, 7, 2)
+        self.norm_01_1 = nn.BatchNorm2d(filter_size)
+
+        self.pad_02_1 = nn.ZeroPad2d(1)
+        self.conv_02_1 = nn.Conv2d(filter_size, filter_size, 3)
+        self.norm_02_1 = nn.BatchNorm2d(filter_size)
+
+        self.pad_02_2 = nn.ZeroPad2d(1)
+        self.conv_02_2 = nn.Conv2d(filter_size, filter_size, 3)
+        self.norm_02_2 = nn.BatchNorm2d(filter_size)
+
+        self.flatten = nn.Flatten()
+        self.linear = nn.Linear(filter_size * int(vector_len / 2) * int(embedding_dim / 2), 1)
+
+        self.sigmoid = nn.Sigmoid()
+        self.relu = nn.ReLU()
+
+    def forward(self, x):
+        embedding_vec = self.embedding(x)  # output shape: [batch size, vector len, embedding_dim]
+
+        conv_vec_0 = torch.unsqueeze(embedding_vec, 1)  # convert shape from [batch size, vector len, embedding dim] to [batch size, 1, vector len, embedding dim]
+
+        # down convolutional layer.
+        conv_vec_1 = self.relu(self.norm_01_1(self.conv_01_1(self.pad_01_1(conv_vec_0))))
+
+        # one residual block(skip layer)
+        conv_vec_2 = self.relu(self.norm_02_1(self.conv_02_1(self.pad_02_1(conv_vec_1))))
+        conv_vec_3 = self.relu(self.norm_02_2(self.conv_02_2(self.pad_02_2(conv_vec_2)))) + conv_vec_1
+
+        out = self.sigmoid(self.linear(self.flatten(conv_vec_2)))
 
         return out
 

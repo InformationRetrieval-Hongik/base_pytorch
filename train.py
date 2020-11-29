@@ -9,7 +9,7 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 
-from models import DNN, LSTM
+from models import DNN, LSTM, Res_CNN
 
 from torch.utils.data import TensorDataset, DataLoader
 
@@ -32,8 +32,9 @@ vector_len = 80
 epoch_size = 20
 batch_size = 500
 
-model = DNN(vocab_size=topN + 2, embedding_dim=embedding_dim, vector_len=vector_len).to(device)
-# model = LSTM(vocab_size=topN + 2, embedding_dim=embedding_dim, vector_len=vector_len, unit_num=128)
+# model = DNN(vocab_size=topN + 2, embedding_dim=embedding_dim, vector_len=vector_len).to(device)
+model = LSTM(vocab_size=topN + 2, embedding_dim=embedding_dim, vector_len=vector_len, unit_num=128).to(device)
+# model = Res_CNN(vocab_size=topN + 2, embedding_dim=embedding_dim, vector_len=vector_len, filter_size=32).to(device)
 
 lr = 0.001
 optimizer = optim.Adam(model.parameters(), lr=lr)
@@ -68,7 +69,6 @@ print("test x shape :", test_x.shape)
 print("test y shape :", test_y.shape)
 
 print("models :")
-# print(summary(model, torch.zeros(1, vector_len).type(torch.LongTensor).to(device), show_input=True))
 summary(model, input_size=(vector_len,), device="cuda" if device == torch.device("cuda") else "cpu")
 
 # ==================================================================================================
@@ -198,7 +198,7 @@ print("================================================")
 
 plt.figure(figsize=(16, 8))
 
-x = np.arange(1, epoch_size + 1)
+x = np.arange(1, epoch_size + 1, 1)
 
 plt.subplot(121)
 plt.plot(x, loss_hist)

@@ -134,7 +134,14 @@ def summary(model, input_size, batch_size=-1, device="cuda"):
             summary[m_key]["input_shape"] = list(input[0].size())
             summary[m_key]["input_shape"][0] = batch_size
             if isinstance(output, (list, tuple)):
-                summary[m_key]["output_shape"] = [[-1] + list(o.size())[1:] for o in output]
+                # summary[m_key]["output_shape"] = [[-1] + list(o.size())[1:] for o in output]
+                output_shape = []
+                for o in output:
+                    if not isinstance(o, (list, tuple)):
+                        output_shape.append([-1] + list(o.size())[1:])
+                    else:
+                        output_shape.append([[-1] + list(oe.size())[1:] for oe in o])
+                summary[m_key]["output_shape"] = output_shape.copy()
             else:
                 summary[m_key]["output_shape"] = list(output.size())
                 summary[m_key]["output_shape"][0] = batch_size
